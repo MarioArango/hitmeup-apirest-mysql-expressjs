@@ -26,9 +26,9 @@
     app.use(morgan('dev'));
     //parseando JSON
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false })); 
+     app.use(bodyParser.urlencoded({ extended: false })); 
     //para entender todos los datos que vengan del formulario y como configuracion extended false por que no enviara imagenes
-    app.use(express.urlencoded ({ extended: true}));
+
 
 //-----------Settings------------------
     //configuracion de CORS
@@ -41,9 +41,13 @@
     });
     //importando routes
     const publicaciones = require('./routes/publicaciones.route');
+    const contactos = require('./routes/contactos.route');
+    const usuarios = require('./routes/usuario.route');
 
 //-----------Routes------------------
     app.use('/api/publicaciones/',publicaciones);
+    app.use('/api/contactos',contactos);
+    app.use('/api/usuarios',usuarios);
 
     server.on('listening',function(){
         console.log('Servidor en el puerto', app.get('port'));

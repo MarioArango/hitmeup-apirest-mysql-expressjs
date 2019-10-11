@@ -4,5 +4,6 @@ const auth = require('../middlewares/authentication');
 const publicaciones_controller = require('../controller/publicaciones.controller');
 
 router.get('/listar-publicaciones',publicaciones_controller.listar_todas_publicaciones);
+router.get('/listar-publicaciones-usuario/:id_usuario',publicaciones_controller.listar_publicaciones_de_usuario);
 
-module.exports = router;
+module.exports = router; 

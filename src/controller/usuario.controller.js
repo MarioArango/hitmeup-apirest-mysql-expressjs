@@ -18,9 +18,9 @@ usuario_controller.listar_comunidad_usuario = function(req, res){
 
      const params = req.body;
       const nick = params.nick_usuario;
-     const password = params.password_usuario;
-     console.log(nick,password);     
-     const sql = "SP_GET_ValidarUsuarioLogin(?,?);"
+      const password =params.password_usuario;
+       console.log('nick: ',nick);
+     const sql = "call SP_GET_ValidarUsuarioLogin(?,?);";
       mysql.query(sql,[nick,password],(err, datosUsuario)=>{
           if(!err){
              res.status(200).send({status:'Success', datos_usuario: datosUsuario[0], code:200}); 

@@ -41,7 +41,7 @@
     });
     //importando routes
     const publicaciones = require('./routes/publicaciones.route');
-    const contactos = require('./routes/contactos.route');
+    const contactos = require('./routes/contactos.route'); 
     const usuarios = require('./routes/usuario.route');
 
 //-----------Routes------------------

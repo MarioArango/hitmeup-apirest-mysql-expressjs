@@ -1,0 +1,9 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 12.5,
+    "editor.cursorBlinking": "smooth",
+    "workbench.colorCustomizations": {
+        "editorCursor.foreground": "#ffff00",
+        "terminalCursor.foreground": "#ffff00"
+    }
+}

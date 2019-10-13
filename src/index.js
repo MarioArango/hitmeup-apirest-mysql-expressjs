@@ -7,14 +7,14 @@
     const morgan = require('morgan');
     //importar parser de JSON
     const bodyParser = require('body-parser');
-    //const http = require('http');
+    const http = require('http');
     const app = express();
     //importar para el manejo de los sockets
     const server = require('http').createServer(app);
 
     require('./database/database');
     
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
     
     //api basado en express
     app.set('port', process.env.PORT || 3749);

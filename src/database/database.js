@@ -4,9 +4,9 @@ const mysqlConection = mysql.createConnection({
 
     
     database: 'bd_hitmeupp',
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
+    host: '165.22.172.115',
+    user: 'itd3',
+    password: 'Z8Iqtq*auj)7',
 
 });
 

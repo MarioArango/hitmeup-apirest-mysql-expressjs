@@ -20,8 +20,8 @@ usuario_controller.listar_comunidad_usuario = function(req, res){
     const nick = params.nick_usuario;
      const password = params.password_usuario;
      console.log(nick,password);     
-     const sql = "call SP_GET_ValidarUsuarioLogin(?);"
-      mysql.query(sql,[nick,password],(err, usuario)=>{
+     const sql = "call SP_GET_ValidarUsuarioLogin(?)";
+      mysql.query(sql,nick,(err, usuario)=>{
           if(!err){
               if(usuario[0][0]!= undefined){
                 //   bcrypt.compare(password, usuario[0][0].password, function(err_bcrypt,res_bcrypt){

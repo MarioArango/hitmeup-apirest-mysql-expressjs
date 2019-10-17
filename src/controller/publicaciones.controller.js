@@ -33,4 +33,20 @@ publicaciones_controller.listar_publicaciones_de_usuario = function(req, res){
         }
     });
 }
+publicaciones_controller.agregar_publicacion = function(req,res){
+
+    const params = req.body;
+    const id_usuario = params.id_usuario;
+    const titulo_publicacion = params.titulo_publicacion;
+    const contenido_publicacion = params.contenido_publicacion;
+
+    const sql= "call SP_POST_AgregarPublicacion(?,?,?)";
+    mysql.query(sql, [id_usuario, titulo_publicacion, contenido_publicacion],(err,respuesta)=>{
+        if(!err){
+            res.status(200).send({status:'Success', message: 'Se agrego la publicación correctamente.',code:200})
+        }else{
+            res.status(400).send({status: 'Error', message:'No se pudo agregar la publicación.', code:400})
+        }
+    });
+}
 module.exports = publicaciones_controller;

@@ -1,6 +1,7 @@
 const usuario_controller = {};
 const mysql = require('../database/database');
 const bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 
 usuario_controller.listar_comunidad_usuario = function(req, res){
  
@@ -57,8 +58,43 @@ usuario_controller.listar_comunidad_usuario = function(req, res){
       }
     });
  }
-
-
+ usuario_controller.recuperar_password = function(req, res){
+   const params = req.body;
+   const email = params.email;
+   const nick = params.nick;
+   console.log(req.body);
+  const sql = "call SP_RecuperarContraseña(?)";
+  mysql.query(sql, nick,(err, contraseña)=>{
+    if(!err){
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'hitmeup.soport@gmail.com',
+          pass: 'hitmeup.soport123'
+        }
+      });
+      var mensaje = "Hola, hemos recibido tu solicitud y tu contraseña es: "+ contraseña[0][0];
+      
+      var mailOptions = {
+        from: 'hitmeup.soport@gmail.com',
+        to: email,
+        subject: 'SOPORTE HITMEUP - RECUPERACIÓN DE CONTRASEÑA',
+        text: mensaje
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email enviado: ' + info.response);
+        }
+      });
+    }else{
+      res.status(400).send({ status: 'Error', error: err, code: 400});
+    }
+  });
+ 
+}
 
 
 module.exports = usuario_controller;

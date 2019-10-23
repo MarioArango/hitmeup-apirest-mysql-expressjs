@@ -51,10 +51,10 @@ usuario_controller.login = function(req,res){
 usuario_controller.cambiar_conexion_usuario = function(req, res){
    const params = req.body;
    const id_usuario =  params.id_usuario;
-   const estado_usuario = params.estado_usuario;
+   const estado_conexion = params.estado_conexion;
    console.log("data:",req.body);
     const sql = "call SP_PUT_CambiarConexionUsuario(?,?)";
-    mysql.query(sql, [id_usuario, estado_usuario],(err, respuesta)=>{
+    mysql.query(sql, [id_usuario, estado_conexion],(err, respuesta)=>{
       if(!err){
         res.status(200).send({status:'Success', message: 'Cambio exitoso.', code:200});
       }else{

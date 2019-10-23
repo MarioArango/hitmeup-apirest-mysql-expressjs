@@ -7,7 +7,7 @@
     const morgan = require('morgan');
     //importar parser de JSON
     const bodyParser = require('body-parser');
-    const http = require('http');
+   
     const app = express();
     //importar para el manejo de los sockets
     const server = require('http').createServer(app);
@@ -55,19 +55,19 @@ const io = require('socket.io')(server);
 
    
     //SOCKETS
-    io.on('connection', socket => {
-        //AGREGAR: SOLO FUNCIONA POR UN ID
-        socket.on('agregar_contacto', data => io.emit('contacto_agreado',{ menssage: data }))
-        //ELIMINAR CONTACTO
-        socket.on('eliminar_contacto',data => io.emit('contacto_eliminado',{ menssage: data }))
-        //INGRESAR
-        socket.on('ingresar_contacto', data => io.emit('contacto_ingresado', { menssage: data }))
-        //VIDEO_LLAMADA -> el puente tenga el id_contacto **
-        //INICIAR LLAMADA
-        socket.on('iniciar_llamada', data => io.emit('respuesta_llamada'+data.id, { menssage: data }))
-        //RESPONDER LLAMADA
-        socket.on('denegar_llamada', data => io.emit('llamada_denegada'+data.id, { menssage: data }))
-    })
+    // io.on('connection', socket => {
+    //     //AGREGAR: SOLO FUNCIONA POR UN ID
+    //     socket.on('agregar_contacto', data => io.emit('contacto_agreado',{ menssage: data }))
+    //     //ELIMINAR CONTACTO
+    //     socket.on('eliminar_contacto',data => io.emit('contacto_eliminado',{ menssage: data }))
+    //     //INGRESAR
+    //     socket.on('ingresar_contacto', data => io.emit('contacto_ingresado', { menssage: data }))
+    //     //VIDEO_LLAMADA -> el puente tenga el id_contacto **
+    //     //INICIAR LLAMADA
+    //     socket.on('iniciar_llamada', data => io.emit('respuesta_llamada'+data.id, { menssage: data }))
+    //     //RESPONDER LLAMADA
+    //     socket.on('denegar_llamada', data => io.emit('llamada_denegada'+data.id, { menssage: data }))
+    // })
 
     server.on('listening',function(){
         console.log('Servidor en el puerto', app.get('port'));

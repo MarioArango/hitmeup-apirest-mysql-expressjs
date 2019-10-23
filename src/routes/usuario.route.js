@@ -8,4 +8,4 @@ router.post('/login',usuario_controller.login);
 router.put('/cambiar-conexion-usuario',usuario_controller.cambiar_conexion_usuario);
 router.put('/recuperar-password',usuario_controller.recuperar_password);
 
-module.exports = router;
+module.exports = router;    

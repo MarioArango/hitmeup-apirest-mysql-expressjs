@@ -3,6 +3,7 @@ const mysql = require('../database/database');
 const bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 const jwt = require('../middlewares/jwt');
+const mail = require('../utils/mail.utils');
 
 usuario_controller.listar_comunidad_usuario = function(req, res){
  
@@ -64,33 +65,17 @@ usuario_controller.cambiar_conexion_usuario = function(req, res){
 
 
 
-const emailHitme = new email({
-  service: 'gmail',
-  auth: {
-      user: 'hitmeup.soport@gmail.com',
-      pass: 'hitmeup.soport123'
-  }
-})
 
 usuario_controller.recuperar_password = (req, res) => {
+
   const { email } = req.body;
   console.log(email);
   const sql = 'call SP_RecuperarContrasenia(?)'
   mysql.query(sql, [email], (err, password) => {
       if (!err) {
-          const sendEmail = {
-              from: "hitmeup.soport@gmail.com",  //remitente
-              to: email,  //destinatario
-              subject: "SOPORTE HITMEUP",  //asunto del correo
-              html: ` 
-                <div> 
-                <p>Hola, hemos recibido su solicitud para la recuperacion de la contraseña</p> 
-                <p>Su contraseña es ${password[0]}</p> 
-                </div> 
-            `
-          }
-          emailHitme.enviarCorreo(sendEmail)
-          res.status(200).send({ status: 'Success', message: 'Cambio exitoso.', code: 200 });
+        const pass = password[0][0];
+        mail.recuperar_password('Se recibio tu solicitud de recuperación de contraseña.', email, pass.password);
+        res.status(200).send({ status:'Success', message: 'Se modifico correctamente', code:'200'});
       } else {
           res.status(400).send({ status: 'Error', error: err, code: 400 });
       }

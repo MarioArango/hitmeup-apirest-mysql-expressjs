@@ -54,20 +54,20 @@ const io = require('socket.io')(server);
     app.use('/api/usuarios',usuarios);
 
    
-    //SOCKETS
-    // io.on('connection', socket => {
-    //     //AGREGAR: SOLO FUNCIONA POR UN ID
-    //     socket.on('agregar_contacto', data => io.emit('contacto_agreado',{ menssage: data }))
-    //     //ELIMINAR CONTACTO
-    //     socket.on('eliminar_contacto',data => io.emit('contacto_eliminado',{ menssage: data }))
-    //     //INGRESAR
-    //     socket.on('ingresar_contacto', data => io.emit('contacto_ingresado', { menssage: data }))
-    //     //VIDEO_LLAMADA -> el puente tenga el id_contacto **
-    //     //INICIAR LLAMADA
-    //     socket.on('iniciar_llamada', data => io.emit('respuesta_llamada'+data.id, { menssage: data }))
-    //     //RESPONDER LLAMADA
-    //     socket.on('denegar_llamada', data => io.emit('llamada_denegada'+data.id, { menssage: data }))
-    // })
+   // SOCKETS
+    io.on('connection', socket => {
+        //AGREGAR: SOLO FUNCIONA POR UN ID
+        socket.on('agregar_contacto', data => io.emit('contacto_agreado',{ menssage: data }))
+        //ELIMINAR CONTACTO
+        socket.on('eliminar_contacto',data => io.emit('contacto_eliminado',{ menssage: data }))
+        //INGRESAR
+        socket.on('ingresar_contacto', data => io.emit('contacto_ingresado', { menssage: data }))
+        //VIDEO_LLAMADA -> el puente tenga el id_contacto **
+        //INICIAR LLAMADA
+        socket.on('iniciar_llamada', data => io.emit('respuesta_llamada'+data.id, { menssage: data }))
+        //RESPONDER LLAMADA
+        socket.on('denegar_llamada', data => io.emit('llamada_denegada'+data.id, { menssage: data }))
+    })
 
     server.on('listening',function(){
         console.log('Servidor en el puerto', app.get('port'));

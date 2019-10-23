@@ -10,7 +10,6 @@ exports.ensureAuth = function(req, res, next){
             code: '400'
         });
     }
-    const token = req.headers.authorization.split(" ")[1];
     const payload = jwt.decode(token, secret);
     try {    
         if(payload.exp <= moment().unix()){

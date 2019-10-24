@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 const jwt = require('../middlewares/jwt');
 const mail = require('../utils/mail.utils');
+const generatePassword = require('../utils/password.utils')
 
 usuario_controller.listar_comunidad_usuario = function(req, res){
  
@@ -61,7 +62,7 @@ usuario_controller.cambiar_conexion_usuario = function(req, res){
         res.status(400).send({ status: 'Error', error: err, code: 400});
       }
     });
- }
+ }  
 
 
 
@@ -70,16 +71,31 @@ usuario_controller.recuperar_password = (req, res) => {
 
   const { email } = req.body;
   console.log(email);
-  const sql = 'call SP_RecuperarContrasenia(?)'
-  mysql.query(sql, [email], (err, password) => {
+  const sql = 'call SP_RecuperarContrasenia(?,?)'
+  var password = generatePassword.random();
+console.log(password)
+  bcrypt.hash(password,generatePassword.numero_saltos(),function(err,hash){
+    mysql.query(sql, [email,hash], (err, flag) => {
       if (!err) {
-        const pass = password[0][0];
-        mail.recuperar_password('Se recibio tu solicitud de recuperación de contraseña.', email, pass.password);
-        res.status(200).send({ status:'Success', message: 'Se modifico correctamente', code:'200'});
+        if(flag[0][0].flag===0){
+          res.status(400).send({ status: 'Error', message: 'No existe el email ingresado.', code: 400});
+        }else{
+          if(flag[0][0].flag===1){
+            res.status(400).send({ status: 'Error', message: 'El usuario ya no esta habilitado.', code: 300 });
+          }else{
+            console.log(flag[0][0].flag);
+          mail.recuperar_password('Se recibio tu solicitud de recuperación de contraseña.', email, password);
+           res.status(200).send({ status:'Success', message: 'Se modifico correctamente', code:'200'});
+          }
+        }
       } else {
           res.status(400).send({ status: 'Error', error: err, code: 400 });
       }
   })
+
+  })
+
+
 }
 
 module.exports = usuario_controller;

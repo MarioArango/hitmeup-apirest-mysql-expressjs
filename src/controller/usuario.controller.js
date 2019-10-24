@@ -8,7 +8,8 @@ const generatePassword = require('../utils/password.utils')
 
 usuario_controller.listar_comunidad_usuario = function(req, res){
  
-    const id_usuario = (jwt.decodificarToken(req.headers.authorization)).id_usuario;
+    // const id_usuario = (jwt.decodificarToken(req.headers.authorization)).id_usuario;
+    const id_usuario = req.params.id_usuario;
     console.log(id_usuario);
     const sql = "call SP_GET_ListarComunidad(?)";
     mysql.query(sql, id_usuario,(err, comunidad)=>{

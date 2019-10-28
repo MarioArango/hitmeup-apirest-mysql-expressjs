@@ -47,11 +47,15 @@ app.use((req, res, next) => {
 const publicaciones = require('./routes/publicaciones.route');
 const contactos = require('./routes/contactos.route');
 const usuarios = require('./routes/usuario.route');
+const like = require('./routes/like.route')
+const comentarios = require('./routes/comentarios.route');
 
 //-----------Routes------------------
 app.use('/api/publicaciones/', publicaciones);
 app.use('/api/contactos', contactos);
 app.use('/api/usuarios', usuarios);
+app.use('/api/likes',like);
+app.use('/api/comentarios', comentarios);
 
 
 // SOCKETS

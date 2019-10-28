@@ -49,4 +49,33 @@ publicaciones_controller.agregar_publicacion = function(req,res){
         }
     });
 }
+publicaciones_controller.editar_publicacion =  function(req,res){
+    const params = req.body;
+    const id_publicacion = params.id_publicacion;
+    const titulo_publicacion = params.titulo_publicacion;
+    const contenido_publicacion = params.contenido_publicacion;
+
+    const sql = "call SP_PUT_EditarPublicacion(?,?,?)";
+    mysql.query(sql, [id_publicacion, titulo_publicacion,contenido_publicacion], (err, respuesta)=>{
+        if(!err){
+            res.status(200).send({status: "success", message: "Se modifico la publicación correctamente.", code:200});
+        }else{
+            res.status(400).send({status: "error", error: error, code:400});
+        }
+    });
+}
+publicaciones_controller.cambiar_estado_publicacion = function(req, res){
+    const params = req.body;
+    const id_publicacion = params.id_publicacion;
+    const estado_publicacion = params.estado_publicacion;
+    const sql = "call SP_PUT_CambiarEstadoPublicacion(?,?)";
+
+    mysql.query(sql, [id_publicacion, estado_publicacion], (err, respuesta)=>{
+        if(!err){
+            res.status(200).send({status:"Success", message: "Se elimino correctamente.", code:200})
+        }else{
+            res.status(400).send({status:"Error",Error: err, code:400})
+        }
+    });
+}
 module.exports = publicaciones_controller;

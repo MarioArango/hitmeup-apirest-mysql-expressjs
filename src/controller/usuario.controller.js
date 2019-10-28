@@ -69,7 +69,6 @@ usuario_controller.cambiar_conexion_usuario = function(req, res){
 
 
 usuario_controller.recuperar_password = (req, res) => {
-
   const { email } = req.body;
   console.log(email);
   const sql = 'call SP_RecuperarContrasenia(?,?)'

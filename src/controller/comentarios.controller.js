@@ -1,19 +1,6 @@
 const comentarios_controller = {};
 const mysql = require('../database/database');
 
-comentarios_controller.listar_comentarios_publicacion = function(req, res){
-
-const id_publicacion = req.params.id_publicacion;
-const sql = "call SP_GET_ListarComentariosPublicacion(?)";
-
-mysql.query(sql, id_publicacion, (err, comentarios)=>{
-    if(!err){
-        res.status(200).send({status: "Success", comentarios: comentarios[0], code:200 })
-    }else{
-        res.status(400).send({status: "Error", Error: err, code: 400})
-    }
-});
-}
 comentarios_controller.agregar_comentario = function(req, res){
     const params = req.body;
     const id_publicacion = params.id_publicacion;

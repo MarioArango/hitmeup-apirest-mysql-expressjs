@@ -7,5 +7,7 @@ router.get('/listar-comunidad/:id_usuario',usuario_controller.listar_comunidad_u
 router.post('/login',usuario_controller.login);
 router.put('/cambiar-conexion-usuario',usuario_controller.cambiar_conexion_usuario);
 router.put('/recuperar-password',usuario_controller.recuperar_password);
+router.post('/modificar-perfil', usuario_controller.modificar_perfil);
+router.post('/cambiar-password',usuario_controller.cambiar_password);
 
 module.exports = router;    

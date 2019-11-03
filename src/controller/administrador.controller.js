@@ -3,7 +3,7 @@ const administrador_controller = {}
 
 administrador_controller.deshabilitar_usuario = (req, res) => {
     const sql = ' call SP_POST_DeshabilitarUsuario(?)'
-    const{ _id} = req.body
+    const{_id} = req.body
     mysql.query(sql, [_id], (error, dato) => {
         if (!err) {
             res.status(200).send({ status: "Success", message: "Usuario deshabilidato.", code: 200 })

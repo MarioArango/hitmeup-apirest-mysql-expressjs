@@ -1,5 +1,3 @@
-import { Module } from "module"
-
 const helpers = {}
 
 //RETORNO UNA PALABRA DE 6 CARACTERES, PARA ASGINAR COMO NOMBRE A LA IMAGEN

@@ -1,10 +1,12 @@
-const usuario_controller = {};
 const mysql = require('../database/database');
 const bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
 const jwt = require('../middlewares/jwt');
 const mail = require('../utils/mail.utils');
 const generatePassword = require('../utils/password.utils')
+const path = require('path')
+const {randomNumer} = require('../utils/libs')
+const fs = require('fs-extra')
+const usuario_controller = {};
 
 usuario_controller.listar_comunidad_usuario = function (req, res) {
 
@@ -140,6 +142,64 @@ usuario_controller.cambiar_password = (req, res) => {
       }
     });
   })
+}
+
+usuario_controller.actualizar_perfil = (req, res) => {
+  const sql = 'call SP_PUT_ActualizarPerfil(?,?,?,?,?,?,?,?)'
+  const { _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario, _email_usuario, _foto_usuario, _nick, _password} = req.body
+  const {_id_datosUsuario} = req.params
+
+    mysql.query(sql, [_id_datosUsuario, _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario, _email_usuario, _foto_usuario, _nick, _password], (error, dato) => {
+      if (!err) {
+        res.status(200).send({ status: 'Success', message: 'Perfil modificado', code: '200' });
+      } else {
+        res.status(400).send({ status: 'Error', error: err, code: 400 });
+      }
+  })
+}
+
+usuario_controller.cargar_imagen = (req, res) => {
+  const sqlURL = 'call SP_GET_ListarUrlsFotosUsuarios()'
+  mysql.query(sqlURL,(err, listaUrls) => {
+
+    const saveImage = async () => {
+      //extension de la imagen
+      const ext = path.extname(req.file.originalname).toLowerCase()
+      //direccion de la imagen
+      const imagePath = req.file.path
+      //Donde quiero colocar la imagen
+      const imgURL = randomNumer() //caracteres random para el nomrbe de la img
+      //Verificando existencia de la URL
+      imgURLExist = listaUrls.filter(url => url===imgURL)
+      if(imgURLExist){
+        saveImage()
+      }else{
+  
+        const targetPath = path.resolve(`src/public/images/${imgURL}${ext}`)
+      
+        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
+          //Mueve la ruta de la img de donde esta 'imagePath' a donde quiero que este 'targetPath'
+          await fs.rename(imagePath, targetPath)
+          const _foto_usuario= imgURL + ext
+          const sql = 'call SP_PUT_AgregarImagen(?,?)'
+          const {_id_datosUsuario} = req.params
+          mysql.query(sql, [_id_datosUsuario, _foto_usuario], (error, dato) => {
+            if (!err) {
+              res.status(200).send({ status: 'Success', message: 'Foto agregada', code: '200' });
+            } else {
+              res.status(400).send({ status: 'Error', error: err, code: 400 });
+            }
+          })
+      
+        }else{
+          //Eliminando datos de la imagen agregada en 'images' con extension incorrecta
+          await fs.unlink(imagePath)
+          res.status(500).json({error: 'Extensión invalida, pruebe otra.'})
+        }
+      }
+    }
+  })
+  saveImage()
 }
 
 module.exports = usuario_controller;

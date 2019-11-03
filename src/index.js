@@ -15,6 +15,9 @@ const server = require('http').createServer(app);
 //Conexión del socket
 const io = require('socket.io')(server);
 
+//Para manejar imagenes
+const multer = require('multer')
+
 
 require('./database/database');
 
@@ -32,7 +35,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //para entender todos los datos que vengan del formulario y como configuracion extended false por que no enviara imagenes
-
+//Configurando las imagenes **image -> es el input del formulario con name="image"**
+app.use(multer({dest: path.join(__dirname, 'public/images')}).single('image'))
 
 //-----------Settings------------------
 //configuracion de CORS
@@ -49,6 +53,7 @@ const contactos = require('./routes/contactos.route');
 const usuarios = require('./routes/usuario.route');
 const like = require('./routes/like.route')
 const comentarios = require('./routes/comentarios.route');
+const administrador = require('./routes/administrador.route')
 
 //-----------Routes------------------
 app.use('/api/publicaciones/', publicaciones);
@@ -56,6 +61,7 @@ app.use('/api/contactos', contactos);
 app.use('/api/usuarios', usuarios);
 app.use('/api/likes',like);
 app.use('/api/comentarios', comentarios);
+app.use('/api/administrador', administrador)
 
 
 // SOCKETS
@@ -71,6 +77,8 @@ io.on('connection', (socket) => {
     socket.on('iniciar_llamada', data => io.emit('respuesta_llamada' + data.id, { menssage: data }));
     //RESPONDER LLAMADA
     socket.on('denegar_llamada', data => io.emit('llamada_denegada' + data.id, { menssage: data }));
+    //DESHABILITAR USUARIO, CAMBIAR DE COLOR VERDE-ROJO, PARA EL QUE CLIENTE
+    socket.on('deshabilitar_usuario', data => {io.emit(`usuario_deshabilitado_${data.id}`, {message: data})})
 });
 
 server.on('listening', function () {

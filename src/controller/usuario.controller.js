@@ -160,10 +160,10 @@ usuario_controller.actualizar_perfil = (req, res) => {
   const {_id_datosUsuario} = req.params
 
     mysql.query(sql, [_id_datosUsuario, _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario, _email_usuario,_nick, _password], (error, dato) => {
-      if (!err) {
+      if (!error) {
         res.status(200).send({ status: 'Success', message: 'Perfil modificado', code: '200' });
       } else {
-        res.status(400).send({ status: 'Error', error: err, code: 400 });
+        res.status(400).send({ status: 'Error', error: error, code: 400 });
       }
   })
 }
@@ -194,10 +194,10 @@ usuario_controller.cargar_imagen = (req, res) => {
           const sql = 'call SP_PUT_AgregarImagen(?,?)'
           const {_id_datosUsuario} = req.params
           mysql.query(sql, [_id_datosUsuario, _foto_usuario], (error, dato) => {
-            if (!err) {
+            if (!error) {
               res.status(200).send({ status: 'Success', message: 'Foto agregada', code: '200' });
             } else {
-              res.status(400).send({ status: 'Error', error: err, code: 400 });
+              res.status(400).send({ status: 'Error', error: error, code: 400 });
             }
           })
       

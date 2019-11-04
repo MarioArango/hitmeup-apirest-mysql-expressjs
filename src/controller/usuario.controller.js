@@ -96,34 +96,44 @@ usuario_controller.recuperar_password = (req, res) => {
   })
 }
 
-usuario_controller.modificar_perfil = (req, res) => {
+usuario_controller.modificar_perfil  = function (req, res) {
   const params = req.body;
+  const paramsFile = req.files;
   const id_usuario = params.id_usuario;
   const id_nivel = params.id_nivel;
   const dni = params.dni;
   const email = params.email;
-  const foto = params.foto;
-
+  
+console.log(req.body, req.files);
   const sql = "call SP_PUT_ModificarPerfilUsuario(?,?,?,?)";
-  const sql2 = "call SP_PUT_ModificarPerfilUsuarioImagen(?,?,?,?,?)"
-  if (foto === null || foto == "" || foto === undefined) {
-    mysql.query(sql, [id_usuario, id_nivel, dni, email], (err, respuesta) => {
+  
+
+  mysql.query(sql, [id_usuario, id_nivel, dni, email], (err, respuesta) => {
       if (!err) {
-        res.status(200).send({ status: 'Success', message: 'Se modifico correctamente', code: '200' });
+        if (req.files) {
+          const foto_usuario = paramsFile.foto_usuario;
+          console.log("foto: ", foto_usuario)
+          var nombre_foto_usuario= (foto_usuario.path).split('/')[4];
+          var extension_foto_usuario = (foto_usuario.type).split('/')[1];
+          const sql2 = "call SP_PUT_ModificarPerfilUsuarioImagen(?,?,?,?,?)";
+          if (extension_foto_usuario == 'jpg' || extension_foto_usuario == 'png' || extension_foto_usuario == 'jpeg') {
+            mysql.query(sql2, [id_usuario, id_nivel, dni, email, nombre_foto_usuario], (err_2, respuesta2) => {
+              if (!err_2) {
+                res.status(200).send({ status: 'Success', message: 'Se modifico correctamente usuario/imagen.', code: '200' });
+              } else {
+                res.status(400).send({ status: 'Error', error: err_2, code: '400' });
+              }
+            });
+          } else {
+            res.status(400).send({ status: 'Error', message: 'Tipo de imagen incorrecta.', code: 400 });
+          }
+        } else {
+          res.status(200).send({ status: 'Success', message: 'Se modifico correctamente usuario. ', code: '200' });
+        }
       } else {
-        res.status(400).send({ status: 'Error', error: err, code: 400 });
+        res.status(400).send({ status: 'Error', error: err, code: '400' });
       }
     });
-  } else {
-    console.log("data: ", id_usuario, id_nivel, dni, email, foto)
-    mysql.query(sql2, [id_usuario, id_nivel, dni, email, foto], (err, respuesta) => {
-      if (!err) {
-        res.status(200).send({ status: 'Success', message: 'Se modifico correctamente', code: '200' });
-      } else {
-        res.status(400).send({ status: 'Error', error: err, code: 400 });
-      }
-    });
-  }
 }
 
 usuario_controller.cambiar_password = (req, res) => {

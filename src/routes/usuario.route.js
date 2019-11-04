@@ -9,6 +9,7 @@ router.put('/cambiar-conexion-usuario',usuario_controller.cambiar_conexion_usuar
 router.put('/recuperar-password',usuario_controller.recuperar_password);
 router.post('/modificar-perfil', usuario_controller.modificar_perfil);
 router.post('/cambiar-password',usuario_controller.cambiar_password);
-router.put('/cargar-imagen',usuario_controller.cargar_imagen);
+router.post('/actualizar-perfil/:id',usuario_controller.cambiar_password);
+router.put('/cargar-imagen/:id',usuario_controller.cargar_imagen);
 
 module.exports = router;    

@@ -156,8 +156,9 @@ usuario_controller.cambiar_password = (req, res) => {
 
 usuario_controller.actualizar_perfil = (req, res) => {
   const sql = 'call SP_PUT_ActualizarPerfil(?,?,?,?,?,?,?)'
+  const { _id_datosUsuario } = req.params
   const { _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario, _email_usuario,_nick, _password} = req.body
-  const {_id_datosUsuario} = req.params
+  
 
     mysql.query(sql, [_id_datosUsuario, _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario, _email_usuario,_nick, _password], (error, dato) => {
       if (!error) {

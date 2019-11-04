@@ -5,10 +5,10 @@ administrador_controller.deshabilitar_usuario = (req, res) => {
     const sql = ' call SP_POST_DeshabilitarUsuario(?)'
     const{_id} = req.body
     mysql.query(sql, [_id], (error, dato) => {
-        if (!err) {
+        if (!error) {
             res.status(200).send({ status: "Success", message: "Usuario deshabilidato.", code: 200 })
         } else {
-            res.status(400).send({ status: "Error", Error: err, code: 400 })
+            res.status(400).send({ status: "Error", Error: error, code: 400 })
         }
     })
 }
@@ -19,10 +19,10 @@ administrador_controller.agregar_usuario = (req, res) => {
         _dni_usuario, _email_usuario, _nick, _password} = req.body
     mysql.query(sql, [_id_nivel, _nombre_usuario, _apePaterno_usuario, _apeMaterno_usuario,
         _dni_usuario, _email_usuario, _nick, _password], (error, dato) => {
-            if (!err) {
+            if (!error) {
                 res.status(200).send({ status: "Success", message: "Usuario creado.", code: 200 })
             } else {
-                res.status(400).send({ status: "Error", Error: err, code: 400 })
+                res.status(400).send({ status: "Error", Error: error, code: 400 })
             }
         })
     
@@ -34,10 +34,10 @@ administrador_controller.actualizar_usuario = (req, res) => {
     const {_dni_usuario} = req.body
 
     mysql.query(sql, [_id_datosUsuario, _dni_usuario], (error, dato) => {
-        if (!err) {
+        if (!error) {
             res.status(200).send({ status: "Success", message: "DNI actualizado.", code: 200 })
         } else {
-            res.status(400).send({ status: "Error", Error: err, code: 400 })
+            res.status(400).send({ status: "Error", Error: error, code: 400 })
         }
     })
 }

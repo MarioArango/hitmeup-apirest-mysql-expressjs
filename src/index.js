@@ -24,7 +24,7 @@ require('./database/database');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 //api basado en express
-app.set('port', process.env.PORT || 3749);
+app.set('port', process.env.PORT || 3000);
 
 //-----------Static Files------------------    
 //para archivos imagenes framework archivos css, js, etc

@@ -170,9 +170,6 @@ usuario_controller.actualizar_perfil = (req, res) => {
 }
 
 usuario_controller.cargar_imagen = (req, res) => {
-  const sqlURL = 'call SP_GET_ListarUrlsFotosUsuarios()'
-  mysql.query(sqlURL,(err, listaUrls) => {
-
     const saveImage = async () => {
       //extension de la imagen
       const ext = path.extname(req.file.originalname).toLowerCase()
@@ -180,12 +177,7 @@ usuario_controller.cargar_imagen = (req, res) => {
       const imagePath = req.file.path
       //Donde quiero colocar la imagen
       const imgURL = randomNumer() //caracteres random para el nomrbe de la img
-      //Verificando existencia de la URL
-      imgURLExist = listaUrls.filter(url => url===imgURL)
-      if(imgURLExist){
-        saveImage()
-      }else{
-  
+
         const targetPath = path.resolve(`src/public/images/${imgURL}${ext}`)
       
         if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
@@ -194,6 +186,7 @@ usuario_controller.cargar_imagen = (req, res) => {
           const _foto_usuario= imgURL + ext
           const sql = 'call SP_PUT_AgregarImagen(?,?)'
           const {_id_datosUsuario} = req.params
+
           mysql.query(sql, [_id_datosUsuario, _foto_usuario], (error, dato) => {
             if (!error) {
               res.status(200).send({ status: 'Success', message: 'Foto agregada', code: '200' });
@@ -207,10 +200,8 @@ usuario_controller.cargar_imagen = (req, res) => {
           await fs.unlink(imagePath)
           res.status(500).json({error: 'Extensión invalida, pruebe otra.'})
         }
-      }
     }
-  })
-  saveImage()
+    saveImage()
 }
 
 module.exports = usuario_controller;

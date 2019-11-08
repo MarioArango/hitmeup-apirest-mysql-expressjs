@@ -15,9 +15,6 @@ const server = require('http').createServer(app);
 //Conexión del socket
 const io = require('socket.io')(server);
 
-//Para manejar imagenes
-const multer = require('multer')
-
 
 require('./database/database');
 
@@ -26,17 +23,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 //api basado en express
 app.set('port', process.env.PORT || 3749);
 
-//-----------Static Files------------------    
-//para archivos imagenes framework archivos css, js, etc
-app.use(express.static(path.join(__dirname, 'public')));
 //-----------Middlewares------------------
 app.use(morgan('dev'));
 //parseando JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-//para entender todos los datos que vengan del formulario y como configuracion extended false por que no enviara imagenes
-//Configurando las imagenes **image -> es el input del formulario con name="image"**
-app.use(multer({dest: path.join(__dirname, 'public/images')}).single('image'))
 
 //-----------Settings------------------
 //configuracion de CORS
@@ -47,6 +38,11 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
     next();
 });
+
+//-----------Static Files------------------    
+//para archivos imagenes framework archivos css, js, etc
+app.use(express.static(path.join(__dirname, 'public')));
+
 //importando routes
 const publicaciones = require('./routes/publicaciones.route');
 const contactos = require('./routes/contactos.route');

@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const Cuenta_Hitmeupp = nodemailer.createTransport({
     
     service: 'gmail',
-    auth: { user: 'hitmeup.soport@gmail.com', pass: 'hitmeup.soport123'}
+  auth: { user: 'hitmeup.soport@gmail.com', pass: 'hitmeup.soport123' }
 });
 
 mail.recuperar_password = function (titulo, usuario_mail, password_mail){

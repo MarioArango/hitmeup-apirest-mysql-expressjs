@@ -4,8 +4,6 @@ const jwt = require('../middlewares/jwt');
 const mail = require('../utils/mail.utils');
 const generatePassword = require('../utils/password.utils')
 const path = require('path')
-const {randomNumer} = require('../utils/libs')
-const fs = require('fs-extra')
 const usuario_controller = {};
 
 usuario_controller.listar_comunidad_usuario = function (req, res) {
@@ -169,39 +167,24 @@ usuario_controller.actualizar_perfil = (req, res) => {
   })
 }
 
-usuario_controller.cargar_imagen = (req, res) => {
-    const saveImage = async () => {
-      //extension de la imagen
-      const ext = path.extname(req.file.originalname).toLowerCase()
-      //direccion de la imagen
-      const imagePath = req.file.path
-      //Donde quiero colocar la imagen
-      const imgURL = randomNumer() //caracteres random para el nomrbe de la img
+/*usuario_controller.cargar_imagen = (req, res) => {
 
-        const targetPath = path.resolve(`src/public/images/${imgURL}${ext}`)
-      
-        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
-          //Mueve la ruta de la img de donde esta 'imagePath' a donde quiero que este 'targetPath'
-          await fs.rename(imagePath, targetPath)
-          const _foto_usuario= imgURL + ext
-          const sql = 'call SP_PUT_AgregarImagen(?,?)'
-          const {_id_datosUsuario} = req.params
+  const sql = 'call SP_PUT_AgregarImagen(?,?)';
 
-          mysql.query(sql, [_id_datosUsuario, _foto_usuario], (error, dato) => {
-            if (!error) {
-              res.status(200).send({ status: 'Success', message: 'Foto agregada', code: '200' });
-            } else {
-              res.status(400).send({ status: 'Error', error: error, code: 400 });
-            }
-          })
-      
-        }else{
-          //Eliminando datos de la imagen agregada en 'images' con extension incorrecta
-          await fs.unlink(imagePath)
-          res.status(500).json({error: 'Extensión invalida, pruebe otra.'})
-        }
+  const result = cloudinary.v2.uploader.upload(req.file.path);
+  const {_id_datosUsuario} = req.params
+  const _foto_usuario = result.url  //secure_url
+  console.log(result);
+  
+  mysql.query(sql, [_id_datosUsuario,_foto_usuario], (error, datos) => {
+    
+    if(!error){
+      res.status(200).send({status: "Succes", message: "Foto agregada"+_foto_usuario, code: 200})
+    }else{
+      res.status(400).send({status: "Error", message:error+"---"+result, code: 400})
     }
-    saveImage()
-}
+  })
+  fs.unlink(req.file.path)
+}*/
 
 module.exports = usuario_controller;

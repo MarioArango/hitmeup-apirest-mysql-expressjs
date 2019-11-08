@@ -1,8 +1,8 @@
 const mysql = require('../database/database')
 const administrador_controller = {}
 
-administrador_controller.deshabilitar_usuario = (req, res) => {
-    const sql = ' call SP_POST_DeshabilitarUsuario(?)'
+administrador_controller.deshabilitar_habilitar_usuario = (req, res) => {
+    const sql = ' call SP_POST_DeshabilitarYHabilitarUsuario(?)'
     const {_id} = req.params
     mysql.query(sql, [_id], (error, dato) => {
         if (!error) {

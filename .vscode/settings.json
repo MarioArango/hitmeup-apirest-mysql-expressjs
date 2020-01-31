@@ -1,9 +1,13 @@
 {
     "files.autoSave": "afterDelay",
-    "editor.fontSize": 12.5,
     "editor.cursorBlinking": "smooth",
     "workbench.colorCustomizations": {
         "editorCursor.foreground": "#ffff00",
         "terminalCursor.foreground": "#ffff00"
-    }
+    },
+    "editor.fontSize": 13.3,
+    "workbench.settings.editor": "json",
+    "editor.fontFamily": "'Fira Code'",
+    "editor.fontLigatures": true,
+    
 }

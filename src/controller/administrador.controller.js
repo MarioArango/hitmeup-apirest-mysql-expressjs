@@ -25,7 +25,7 @@ administrador_controller.agregar_usuario = (req, res) => {
                 res.status(400).send({ status: "Error", Error: error, code: 400 })
             }
         })
-    
+
 }
 
 administrador_controller.actualizar_usuario = (req, res) => {
@@ -38,8 +38,21 @@ administrador_controller.actualizar_usuario = (req, res) => {
             res.status(200).send({ status: "Success", message: "DNI actualizado.", code: 200 })
         } else {
             res.status(400).send({ status: "Error", Error: error, code: 400 })
-        }   
+        }
     })
+}
+
+administrador_controller.listar_alumnos = (req, res) => {
+  sql = 'call SP_GET_ListarAlumnos()';
+
+  mysql.query(sql, (error, dato) => {
+    
+    if(!error){
+      res.status(200).send({status:'Succes', message: dato[0], code: 200})
+    }else{
+      res.status(400).send({status: 'Failed', message: error, code: 400})
+    }
+  })
 }
 
 module.exports = administrador_controller;
